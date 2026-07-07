@@ -176,26 +176,31 @@
       <p class="kicker">Galerie</p>
       <h2 class="gallery-section__title" id="galerie-titre">L&rsquo;esprit de la maison</h2>
     </div>
-    <ul class="gallery">
-      <li><button type="button" class="gallery__item" data-gallery-item data-reveal data-reveal-delay="0" data-full="assets/img/plat-1.jpg" aria-label="Agrandir la photo : Entrée">
-        <picture><source srcset="assets/img/plat-1.webp" type="image/webp"><img src="assets/img/plat-1.jpg" width="765" height="1020" alt="Entrée créole dressée" loading="lazy"></picture>
-      </button></li>
-      <li><button type="button" class="gallery__item" data-gallery-item data-reveal data-reveal-delay="100" data-full="assets/img/plat-3.jpg" aria-label="Agrandir la photo : Plat">
-        <picture><source srcset="assets/img/plat-3.webp" type="image/webp"><img src="assets/img/plat-3.jpg" width="765" height="1020" alt="Plat signature du chef" loading="lazy"></picture>
-      </button></li>
-      <li><button type="button" class="gallery__item" data-gallery-item data-reveal data-reveal-delay="200" data-full="assets/img/salle-2.jpg" aria-label="Agrandir la photo : Salle">
-        <picture><source srcset="assets/img/salle-2.webp" type="image/webp"><img src="assets/img/salle-2.jpg" width="756" height="1008" alt="Salle du restaurant O'Zépices" loading="lazy"></picture>
-      </button></li>
-      <li><button type="button" class="gallery__item" data-gallery-item data-reveal data-reveal-delay="0" data-full="assets/img/plat-4.jpg" aria-label="Agrandir la photo : Dessert chocolat">
-        <picture><source srcset="assets/img/plat-4.webp" type="image/webp"><img src="assets/img/plat-4.jpg" width="900" height="1200" alt="Dessert au chocolat" loading="lazy"></picture>
-      </button></li>
-      <li><button type="button" class="gallery__item" data-gallery-item data-reveal data-reveal-delay="100" data-full="assets/img/plat-5.jpg" aria-label="Agrandir la photo : Dessert">
-        <picture><source srcset="assets/img/plat-5.webp" type="image/webp"><img src="assets/img/plat-5.jpg" width="756" height="1008" alt="Dessert du chef" loading="lazy"></picture>
-      </button></li>
-      <li><button type="button" class="gallery__item" data-gallery-item data-reveal data-reveal-delay="200" data-full="assets/img/plat-6.jpg" aria-label="Agrandir la photo : Dessert fleur">
-        <picture><source srcset="assets/img/plat-6.webp" type="image/webp"><img src="assets/img/plat-6.jpg" width="900" height="1200" alt="Dessert décoré d'une fleur" loading="lazy"></picture>
-      </button></li>
-    </ul>
+    <div class="carousel3d" data-carousel3d data-reveal>
+      <div class="carousel3d__stage">
+        <div class="carousel3d__track" data-carousel3d-track>
+          <button type="button" class="carousel3d__item" data-gallery-item data-full="assets/img/plat-1.jpg" aria-label="Agrandir la photo : Entrée">
+            <picture><source srcset="assets/img/plat-1.webp" type="image/webp"><img src="assets/img/plat-1.jpg" alt="Entrée créole dressée" draggable="false"></picture>
+          </button>
+          <button type="button" class="carousel3d__item" data-gallery-item data-full="assets/img/plat-3.jpg" aria-label="Agrandir la photo : Plat">
+            <picture><source srcset="assets/img/plat-3.webp" type="image/webp"><img src="assets/img/plat-3.jpg" alt="Plat signature du chef" draggable="false"></picture>
+          </button>
+          <button type="button" class="carousel3d__item" data-gallery-item data-full="assets/img/salle-2.jpg" aria-label="Agrandir la photo : Salle">
+            <picture><source srcset="assets/img/salle-2.webp" type="image/webp"><img src="assets/img/salle-2.jpg" alt="Salle du restaurant O'Zépices" draggable="false"></picture>
+          </button>
+          <button type="button" class="carousel3d__item" data-gallery-item data-full="assets/img/plat-4.jpg" aria-label="Agrandir la photo : Dessert chocolat">
+            <picture><source srcset="assets/img/plat-4.webp" type="image/webp"><img src="assets/img/plat-4.jpg" alt="Dessert au chocolat" draggable="false"></picture>
+          </button>
+          <button type="button" class="carousel3d__item" data-gallery-item data-full="assets/img/plat-5.jpg" aria-label="Agrandir la photo : Dessert">
+            <picture><source srcset="assets/img/plat-5.webp" type="image/webp"><img src="assets/img/plat-5.jpg" alt="Dessert du chef" draggable="false"></picture>
+          </button>
+          <button type="button" class="carousel3d__item" data-gallery-item data-full="assets/img/plat-6.jpg" aria-label="Agrandir la photo : Dessert fleur">
+            <picture><source srcset="assets/img/plat-6.webp" type="image/webp"><img src="assets/img/plat-6.jpg" alt="Dessert décoré d'une fleur" draggable="false"></picture>
+          </button>
+        </div>
+      </div>
+      <p class="carousel3d__hint">Glisser pour faire pivoter · cliquer pour agrandir</p>
+    </div>
   </section>
 
   <!-- ÉVÉNEMENTS -->

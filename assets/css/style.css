@@ -501,29 +501,58 @@ a { color: inherit; }
   font-weight: 500;
   margin: 0;
 }
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.gallery__item {
-  aspect-ratio: 4 / 5;
+/* Carrousel 3D */
+.carousel3d__stage {
+  height: 420px;
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+}
+.carousel3d__track {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.carousel3d__track:active { cursor: grabbing; }
+.carousel3d__item {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
   border: none;
-  padding: 0;
   background: none;
-  cursor: zoom-in;
+  cursor: pointer;
+}
+.carousel3d__item picture {
   display: block;
+  width: 100%;
+  height: 100%;
 }
-.gallery__item img {
-  width: 100%; height: 100%;
+.carousel3d__item img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  transition: transform 1.2s cubic-bezier(.22,.61,.36,1);
+  border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(42, 26, 18, .3);
+  pointer-events: none;
+  user-select: none;
 }
-.gallery__item:hover img, .gallery__item:focus-visible img { transform: scale(1.07); }
+.carousel3d__hint {
+  text-align: center;
+  margin-top: 18px;
+  font-family: Jost, sans-serif;
+  font-size: 12.5px;
+  letter-spacing: .06em;
+  color: var(--texte-mut);
+}
 
 /* Lightbox */
 .lightbox {
@@ -846,7 +875,6 @@ a { color: inherit; }
   .nav__links { display: none; }
   .burger { display: flex; }
   .stack, .menu-cards__grid, .reserve-grid { grid-template-columns: 1fr !important; }
-  .gallery { grid-template-columns: 1fr 1fr; }
   .hero { height: auto; min-height: 86vh; }
   .hero__inner { padding: 120px 22px 72px; }
   .hero__proverb { display: none; }
@@ -858,6 +886,7 @@ a { color: inherit; }
   .carte-teaser__img { min-height: 300px; }
 
   .gallery-section { padding: 56px 22px; }
+  .carousel3d__stage { height: 300px; }
 
   .events { min-height: 460px; }
   .events__inner { padding: 0 22px; }
@@ -880,6 +909,5 @@ a { color: inherit; }
 }
 
 @media (max-width: 480px) {
-  .gallery { grid-template-columns: 1fr; }
   .discovery-banner { flex-direction: column; align-items: flex-start; }
 }

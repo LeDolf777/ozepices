@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ozepices.gp/sitemap.xml
+Sitemap: https://ledolf777.github.io/ozepices/sitemap.xml

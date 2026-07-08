@@ -80,7 +80,7 @@
 </header>
 
 <!-- MOBILE MENU -->
-<div class="mobile-menu" id="menu-mobile" data-mobile-menu hidden>
+<div class="mobile-menu" id="menu-mobile" data-mobile-menu data-cursor="dark" hidden>
   <button class="mobile-menu__close" data-mobile-close type="button" aria-label="Fermer le menu">&times;</button>
   <a class="mobile-menu__link" href="index.html#chef">Le Chef</a>
   <a class="mobile-menu__link" href="la-carte.html">La Carte</a>
@@ -92,7 +92,7 @@
 <main id="contenu">
 
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" data-cursor="dark">
     <picture>
       <source srcset="assets/img/hero-facade.webp" type="image/webp">
       <img class="hero__img" src="assets/img/hero-facade.jpg" width="1360" height="1020" alt="Façade du restaurant Ô z'épices by Jimmy Bibrac, à Bouillante" fetchpriority="high">
@@ -132,7 +132,7 @@
   </section>
 
   <!-- LA CARTE (teaser) -->
-  <section id="carte" class="carte-teaser" aria-labelledby="carte-titre">
+  <section id="carte" class="carte-teaser" data-cursor="dark" aria-labelledby="carte-titre">
     <div class="stack" style="grid-template-columns: 1.45fr 1fr;">
       <div class="carte-teaser__body" data-reveal>
         <p class="kicker kicker--light">La Carte</p>
@@ -172,13 +172,15 @@
 
   <!-- GALERIE -->
   <section id="galerie" class="gallery-section" aria-labelledby="galerie-titre">
-    <div class="gallery-section__head" data-reveal>
-      <p class="kicker">Galerie</p>
-      <h2 class="gallery-section__title" id="galerie-titre">L&rsquo;esprit de la maison</h2>
+    <div class="gallery-section__inner">
+      <div class="gallery-section__head" data-reveal>
+        <p class="kicker">Galerie</p>
+        <h2 class="gallery-section__title" id="galerie-titre">L&rsquo;esprit de la maison</h2>
+      </div>
     </div>
     <div class="carousel3d" data-carousel3d data-reveal>
       <div class="carousel3d__stage">
-        <div class="carousel3d__track" data-carousel3d-track>
+        <div class="carousel3d__track" data-carousel3d-track tabindex="0" role="region" aria-label="Galerie photo, glisser ou utiliser les flèches pour naviguer">
           <button type="button" class="carousel3d__item" data-gallery-item data-full="assets/img/plat-1.jpg" aria-label="Agrandir la photo : Entrée">
             <picture><source srcset="assets/img/plat-1.webp" type="image/webp"><img src="assets/img/plat-1.jpg" alt="Entrée créole dressée" draggable="false"></picture>
           </button>
@@ -199,12 +201,12 @@
           </button>
         </div>
       </div>
-      <p class="carousel3d__hint">Glisser pour faire pivoter · cliquer pour agrandir</p>
+      <p class="carousel3d__hint">Glisser pour faire défiler · cliquer pour agrandir</p>
     </div>
   </section>
 
   <!-- ÉVÉNEMENTS -->
-  <section id="evenements" class="events" aria-labelledby="evenements-titre">
+  <section id="evenements" class="events" data-cursor="dark" aria-labelledby="evenements-titre">
     <picture>
       <source srcset="assets/img/salle-1.webp" type="image/webp">
       <img class="events__img" src="assets/img/salle-1.jpg" width="1100" height="1467" alt="Salle du restaurant privatisable pour événements" loading="lazy">
@@ -241,7 +243,7 @@
 </main>
 
 <!-- FOOTER -->
-<footer class="footer" data-footer>
+<footer class="footer" data-footer data-cursor="dark">
   <a href="index.html" class="footer__brand">
     <svg width="26" height="31" viewBox="0 0 100 118" fill="none" aria-hidden="true"><path d="M37 27 L50 9 L63 27" stroke="#e5933a" stroke-width="7" stroke-linejoin="miter"></path><circle cx="50" cy="73" r="41" stroke="#b23a2e" stroke-width="7"></circle><circle cx="50" cy="73" r="31" stroke="#b5883c" stroke-width="6"></circle><circle cx="50" cy="73" r="22" stroke="#e5933a" stroke-width="5"></circle></svg>
     <span class="footer__brand-name">O&rsquo;Zépices</span>
@@ -253,7 +255,7 @@
 </footer>
 
 <!-- LIGHTBOX -->
-<div class="lightbox" data-lightbox hidden role="dialog" aria-modal="true" aria-label="Photo agrandie">
+<div class="lightbox" data-lightbox data-cursor="dark" hidden role="dialog" aria-modal="true" aria-label="Photo agrandie">
   <button class="lightbox__close" data-lightbox-close type="button" aria-label="Fermer">&times;</button>
   <button class="lightbox__nav lightbox__nav--prev" data-lightbox-prev type="button" aria-label="Photo précédente">&#8249;</button>
   <figure style="margin:0;">

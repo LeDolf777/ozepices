@@ -61,96 +61,132 @@
   var track = carousel && carousel.querySelector("[data-carousel3d-track]");
 
   if (carousel && track) {
-    (function initCarousel3d() {
+    (function initCoverflow() {
       var items = Array.prototype.slice.call(track.children);
       var count = items.length;
-      var rotation = 0;
       var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var spacing = 0;
+      var centerOffset = Math.min(2, count - 1);
+      var snapRaf = null;
+      var snapTarget = null;
 
-      function layout() {
-        var cylinderWidth = window.innerWidth < 640 ? 900 : 1500;
-        var faceWidth = cylinderWidth / count;
-        var radius = cylinderWidth / (2 * Math.PI);
-        track.style.width = cylinderWidth + "px";
-        items.forEach(function (item, i) {
-          item.style.width = faceWidth + "px";
-          item.style.marginLeft = (-faceWidth / 2) + "px";
-          item.style.transform = "rotateY(" + (i * (360 / count)) + "deg) translateZ(" + radius + "px)";
-        });
-        applyRotation();
+      function clampBounds(v) {
+        return Math.max(0, Math.min(count - 1, v));
       }
 
-      function applyRotation() {
-        track.style.transform = "rotateY(" + rotation + "deg)";
+      function layout() {
+        var stageWidth = carousel.querySelector(".carousel3d__stage").clientWidth;
+        var small = window.innerWidth < 640;
+        var itemWidth = small
+          ? Math.min(230, stageWidth * 0.64)
+          : Math.min(340, stageWidth * 0.34);
+        spacing = itemWidth * 0.8;
+        items.forEach(function (item) {
+          item.style.width = itemWidth + "px";
+          item.style.marginLeft = (-itemWidth / 2) + "px";
+        });
+        render();
+      }
+
+      function render() {
+        items.forEach(function (item, i) {
+          var offset = i - centerOffset;
+          var abs = Math.min(Math.abs(offset), 3);
+          var x = offset * spacing;
+          var rot = Math.max(-32, Math.min(32, offset * -20));
+          var scale = 1 - abs * 0.09;
+          var z = -abs * 60;
+          item.style.transform =
+            "translateX(" + x + "px) translateZ(" + z + "px) rotateY(" + rot + "deg) scale(" + scale + ")";
+          item.style.zIndex = String(100 - Math.round(abs * 10));
+          item.classList.toggle("is-center", abs < 0.5);
+        });
       }
 
       var dragging = false;
       var startX = 0;
-      var startRotation = 0;
+      var startOffset = 0;
       var lastX = 0;
       var lastT = 0;
       var velocity = 0;
       var moved = 0;
-      var rafId = null;
       var downItem = null;
 
-      function stopInertia() {
-        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      function stopSnap() {
+        if (snapRaf) { cancelAnimationFrame(snapRaf); snapRaf = null; }
+      }
+
+      function snapTo(target) {
+        stopSnap();
+        snapTarget = clampBounds(target);
+        if (reducedMotion) {
+          centerOffset = snapTarget;
+          render();
+          return;
+        }
+        (function step() {
+          var delta = snapTarget - centerOffset;
+          if (Math.abs(delta) < 0.002) {
+            centerOffset = snapTarget;
+            render();
+            snapRaf = null;
+            return;
+          }
+          centerOffset += delta * 0.22;
+          render();
+          snapRaf = requestAnimationFrame(step);
+        })();
       }
 
       function onPointerDown(e) {
-        stopInertia();
+        stopSnap();
         dragging = true;
         moved = 0;
         downItem = e.target.closest("[data-gallery-item]");
         startX = lastX = e.clientX;
-        startRotation = rotation;
+        startOffset = centerOffset;
         lastT = performance.now();
         velocity = 0;
         track.setPointerCapture(e.pointerId);
       }
 
       function onPointerMove(e) {
-        if (!dragging) return;
+        if (!dragging || !spacing) return;
         var now = performance.now();
         var dx = e.clientX - lastX;
         var dt = Math.max(1, now - lastT);
-        velocity = (dx / dt) * 16;
-        rotation = startRotation + (e.clientX - startX) * 0.06;
+        velocity = dx / dt;
         moved += Math.abs(dx);
         lastX = e.clientX;
         lastT = now;
-        applyRotation();
+
+        var next = startOffset - (e.clientX - startX) / spacing;
+        if (next < 0) next *= 0.4;
+        if (next > count - 1) next = (count - 1) + (next - (count - 1)) * 0.4;
+        centerOffset = next;
+        render();
       }
 
       function onPointerUp() {
         if (!dragging) return;
         dragging = false;
-        // Pointer capture retargets the native click event to the track
-        // itself, so a real tap is dispatched manually on the item that
-        // was under the finger/cursor at pointerdown.
         if (moved <= 6 && downItem) {
           downItem.click();
+          snapTo(Math.round(centerOffset));
+          return;
         }
-        if (!reducedMotion && Math.abs(velocity) > 0.5) {
-          var angularVelocity = velocity * 0.06;
-          (function step() {
-            angularVelocity *= 0.95;
-            rotation += angularVelocity;
-            applyRotation();
-            if (Math.abs(angularVelocity) > 0.02) {
-              rafId = requestAnimationFrame(step);
-            } else {
-              rafId = null;
-            }
-          })();
-        }
+        var flick = -velocity * 4.5;
+        snapTo(Math.round(centerOffset + flick));
       }
 
       track.addEventListener("pointerdown", onPointerDown);
       track.addEventListener("pointermove", onPointerMove);
       track.addEventListener("pointerup", onPointerUp);
       track.addEventListener("pointercancel", onPointerUp);
+      track.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") { snapTo(Math.round(centerOffset) - 1); e.preventDefault(); }
+        if (e.key === "ArrowRight") { snapTo(Math.round(centerOffset) + 1); e.preventDefault(); }
+      });
 
       var resizeTimer;
       window.addEventListener("resize", function () {
@@ -222,5 +258,34 @@
         link.setAttribute("aria-current", "page");
       }
     });
+  }
+
+  // ---------- Custom cursor dot ----------
+  if (window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    document.documentElement.classList.add("has-custom-cursor");
+    var dot = document.createElement("div");
+    dot.className = "cursor-dot";
+    dot.setAttribute("aria-hidden", "true");
+    document.body.appendChild(dot);
+
+    var px = 0, py = 0, raf = null;
+    var interactiveSelector = "a, button, [role='button'], input, textarea, select, summary";
+
+    function paint() {
+      raf = null;
+      dot.style.transform = "translate(-50%, -50%) translate(" + px + "px," + py + "px)";
+      var el = document.elementFromPoint(px, py);
+      var zone = el && el.closest("[data-cursor]");
+      dot.classList.toggle("is-dark", !!zone && zone.getAttribute("data-cursor") === "dark");
+      dot.classList.toggle("is-pointer", !!(el && el.closest(interactiveSelector)));
+    }
+
+    document.addEventListener("mousemove", function (e) {
+      px = e.clientX;
+      py = e.clientY;
+      dot.classList.add("is-visible");
+      if (!raf) raf = requestAnimationFrame(paint);
+    });
+    document.addEventListener("mouseleave", function () { dot.classList.remove("is-visible"); });
   }
 })();

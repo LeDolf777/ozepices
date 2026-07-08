@@ -74,6 +74,36 @@ a { color: inherit; }
   border-radius: 2px;
 }
 
+/* Custom cursor — a dot that swaps between the two palette colors
+   depending on whether it's over a light or dark background. Only on
+   devices with a real mouse; touchscreens keep their native behavior. */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--brique);
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: background-color .25s ease, opacity .2s ease, width .2s ease, height .2s ease;
+}
+.cursor-dot.is-visible { opacity: .9; }
+.cursor-dot.is-dark { background: var(--or-clair); }
+.cursor-dot.is-pointer { width: 30px; height: 30px; opacity: .55; }
+
+@media (hover: hover) and (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor a,
+  html.has-custom-cursor button,
+  html.has-custom-cursor [role="button"] {
+    cursor: none;
+  }
+}
+
 /* ---------- NAV ---------- */
 .nav {
   position: sticky;
@@ -343,10 +373,14 @@ a { color: inherit; }
   margin: 0 auto;
 }
 
-/* Le Chef */
+/* Le Chef — bleeds full-width so the photo fills the entire left half of the viewport */
+#chef {
+  max-width: none;
+  width: 100%;
+}
 .chef__img {
   position: relative;
-  min-height: 560px;
+  min-height: 640px;
   overflow: hidden;
 }
 .chef__img img {
@@ -360,6 +394,7 @@ a { color: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-width: 640px;
 }
 .kicker {
   font-family: Jost, sans-serif;
@@ -489,10 +524,13 @@ a { color: inherit; }
 
 /* Galerie */
 .gallery-section {
-  padding: 80px 48px;
+  padding: 80px 0;
   background: var(--creme);
+}
+.gallery-section__inner {
   max-width: 1280px;
   margin: 0 auto;
+  padding: 0 48px;
 }
 .gallery-section__head { text-align: center; margin-bottom: 44px; }
 .gallery-section__title {
@@ -501,10 +539,11 @@ a { color: inherit; }
   font-weight: 500;
   margin: 0;
 }
-/* Carrousel 3D */
+/* Carrousel horizontal (coverflow) */
+.carousel3d { width: 100%; }
 .carousel3d__stage {
-  height: 420px;
-  perspective: 1200px;
+  height: 440px;
+  perspective: 1600px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -512,10 +551,11 @@ a { color: inherit; }
 }
 .carousel3d__track {
   position: relative;
+  width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
   cursor: grab;
   touch-action: pan-y;
+  user-select: none;
 }
 .carousel3d__track:active { cursor: grabbing; }
 .carousel3d__item {
@@ -530,6 +570,7 @@ a { color: inherit; }
   border: none;
   background: none;
   cursor: pointer;
+  will-change: transform;
 }
 .carousel3d__item picture {
   display: block;
@@ -541,9 +582,13 @@ a { color: inherit; }
   height: 100%;
   object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0 20px 40px rgba(42, 26, 18, .3);
+  box-shadow: 0 16px 32px rgba(42, 26, 18, .25);
   pointer-events: none;
   user-select: none;
+  transition: box-shadow .3s ease;
+}
+.carousel3d__item.is-center img {
+  box-shadow: 0 24px 48px rgba(42, 26, 18, .38);
 }
 .carousel3d__hint {
   text-align: center;
@@ -885,8 +930,9 @@ a { color: inherit; }
   .carte-teaser__body { padding: 56px 22px; }
   .carte-teaser__img { min-height: 300px; }
 
-  .gallery-section { padding: 56px 22px; }
-  .carousel3d__stage { height: 300px; }
+  .gallery-section { padding: 56px 0; }
+  .gallery-section__inner { padding: 0 22px; }
+  .carousel3d__stage { height: 320px; }
 
   .events { min-height: 460px; }
   .events__inner { padding: 0 22px; }
